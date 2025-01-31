@@ -129,7 +129,7 @@ def update_output_container(selected_statistics,input_year):
 # Plot 4 bar chart for the effect of unemployment rate on vehicle type and sales
     #grouping data for plotting
 	# Hint:Use unemployment_rate,Vehicle_Type and Automobile_Sales columns
-        unemp_data = recession_data.groupby(['unemployment_rate', 'Vehicle_Type'])['Automobile_Sales'].mean().reset_index()
+        unemp_data = recession_data.groupby(['Vehicle_Type', 'unemployment_rate'])['Automobile_Sales'].mean().reset_index()
         R_chart4 = dcc.Graph(
             figure=px.bar(
                 unemp_data,
@@ -149,7 +149,7 @@ def update_output_container(selected_statistics,input_year):
     # Yearly Statistic Report Plots
     # Check for Yearly Statistics.                             
     elif (input_year and selected_statistics =='Yearly Statistics') :
-        yearly_data = data[data['Year'] == int(input_year)]
+        yearly_data = data[data['Year'] == input_year]
                                                 
 #plot 1 Yearly Automobile sales using line chart for the whole period.
     # grouping data for plotting.
@@ -166,19 +166,19 @@ def update_output_container(selected_statistics,input_year):
 # Plot 2 Total Monthly Automobile sales using line chart.
         # grouping data for plotting.
 	# Hint:Use the columns Month and Automobile_Sales.
-        yealy_data=data.groupby('Month')['Automobile_Sales'].sum().reset_index()
+        # yealy_data=data.groupby('Month')['Automobile_Sales'].sum().reset_index()
         Y_chart2 = dcc.Graph(
             figure=px.line(
                 yearly_data,
                 x='Month',
                 y='Automobile_Sales',
-                title='Total Monthly Automobile Sales'
+                title='Monthly Automobile Sales for the year {}'.format(input_year)
             )
         )
   # Plot bar chart for average number of vehicles sold during the given year
          # grouping data for plotting.
          # Hint:Use the columns Year and Automobile_Sales
-        avr_vdata=yearly_data.groupby('Year')['Automobile_Sales'].mean().reset_index()
+        avr_vdata=yearly_data.groupby('Vehicle_Type')['Automobile_Sales'].mean().reset_index()
         Y_chart3 = dcc.Graph(
             figure=px.bar(
                 avr_vdata,
